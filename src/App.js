@@ -7,8 +7,10 @@ import './default.scss';
 function App() {
   return (
     <div className="App">
-      <Header/>
-      <Homepage/>
+        <Header />
+      <div className="main">
+        <Homepage />
+      </div>
     </div>
   );
 }
