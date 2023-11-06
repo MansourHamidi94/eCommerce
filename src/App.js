@@ -1,16 +1,30 @@
 import React from "react";
-import Header from './components/Header';
-import Homepage from './pages/homePage'
-import './default.scss';
+import { Route, Routes } from "react-router-dom";
 
+// layouts
+import MainLayout from "./layouts/MainLayout";
+import HomePageLayout from "./layouts/HomePageLayout";
+
+// pages
+import Homepage from './pages/homePage'
+import Registration from "./pages/Registration";
+import './default.scss';
 
 function App() {
   return (
     <div className="App">
-        <Header />
-      <div className="main">
-        <Homepage />
-      </div>
+      <Routes>
+        <Route path="/" element={
+          <HomePageLayout>
+            <Homepage />
+          </HomePageLayout>
+        } />
+        <Route path="/registration" element={
+          <MainLayout>
+            <Registration />
+          </MainLayout>
+        } />
+      </Routes>
     </div>
   );
 }
