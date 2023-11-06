@@ -6,7 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePageLayout from "./layouts/HomePageLayout";
 
 // pages
-import Homepage from './pages/homePage'
+import Homepage from './pages/Homepage'
 import Registration from "./pages/Registration";
 import './default.scss';
 

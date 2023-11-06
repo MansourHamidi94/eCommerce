@@ -1,6 +1,8 @@
 import React from "react";
 import './styles.scss';
-import Logo from './../../images/logo5.png'
+import { Link } from 'react-router-dom';
+
+import Logo from './../../images/logo5.png';
 
 
 
@@ -9,13 +11,21 @@ const Header = props => {
 
         <header className="header">
             <div className="wrap">
-                <div className="logo"> 
-                <img src = {Logo} alt="eCommerce Logo"/>
-
+                <div className="logo">
+                    <Link to="/">
+                    <img src={Logo} alt="eCommerce Logo" />
+                    </Link>
+                </div>
+                <div className="callToActions">
+                    <ul>
+                        <li>
+                            <Link to ="/registration">
+                            Register
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
-
         </header>
     );
 }
