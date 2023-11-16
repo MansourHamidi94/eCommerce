@@ -26,6 +26,8 @@ export const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
 };
 
+export { auth };
+
 export const handleUserProfile = async (userAuth, additionalData) => {
     if (!userAuth) return;
     const { uid } = userAuth;

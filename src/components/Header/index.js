@@ -28,7 +28,7 @@ const Header = props => {
                                 }).catch((error) => {
                                     // Handle sign out errors
                                 })}>
-                                    Log Out
+                                    LOGOUT
                                 </span>
 
                             </li>

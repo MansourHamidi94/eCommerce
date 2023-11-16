@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import './styles.scss';
 
 // firebase
-import { getAuth, handleUserProfile } from './../../firebase/utils';
-
+import {  auth,handleUserProfile } from './../../firebase/utils';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import FormInput from "../forms/Forminput";
 import Button from "../forms/Button";
 import { confirmPasswordReset } from "firebase/auth";
@@ -37,7 +37,7 @@ class Signup extends Component {
 
     handleFormSubmit = async event => {
         event.preventDefault();
-        const { displayName, email, password, confirmPassword, errors } = this.state;
+        const { displayName, email, password, confirmPassword } = this.state;
 
         if (password !== confirmPassword) {
             const err = ["Password don't match"];
@@ -46,18 +46,31 @@ class Signup extends Component {
             })
             return;
         }
+
+        try {
+            const { user } = await createUserWithEmailAndPassword(auth, email, password);
+            await handleUserProfile(user, { displayName });
+            this.setState({ ...initialState });
+        } catch (err) {
+            console.error("Error during user registration:", err);
+            // Set the error message in the state to display it to the user
+            this.setState({ errors: [err.message] });
+        }
+        
+
+
     }
 
     render() {
         const { displayName, email, password, confirmPassword, errors } = this.state;
-    
+
         return (
             <div className="signup">
                 <div className="wrap">
                     <h2>
                         Signup
                     </h2>
-    
+
                     {errors.length > 0 && (
                         <ul>
                             {errors.map((err, index) => (
@@ -67,9 +80,8 @@ class Signup extends Component {
                             ))}
                         </ul>
                     )}
-    
+
                     <div className="formWrap">
-                        {/* Corrected: Removed the self-closing form tag */}
                         <form onSubmit={this.handleFormSubmit}>
                             <FormInput
                                 type="text"
@@ -78,7 +90,7 @@ class Signup extends Component {
                                 placeholder="Full name"
                                 onChange={this.handleChange}
                             />
-    
+
                             <FormInput
                                 type="email"
                                 name="email"
@@ -86,7 +98,7 @@ class Signup extends Component {
                                 placeholder="Email"
                                 onChange={this.handleChange}
                             />
-    
+
                             <FormInput
                                 type="password"
                                 name="password"
@@ -94,7 +106,7 @@ class Signup extends Component {
                                 placeholder="Password"
                                 onChange={this.handleChange}
                             />
-    
+
                             <FormInput
                                 type="password"
                                 name="confirmPassword"
@@ -102,7 +114,7 @@ class Signup extends Component {
                                 placeholder="Confirm Password"
                                 onChange={this.handleChange}
                             />
-    
+
                             <Button type="submit">
                                 Register
                             </Button>
@@ -112,6 +124,6 @@ class Signup extends Component {
             </div >
         );
     }
-}   
+}
 
 export default Signup;

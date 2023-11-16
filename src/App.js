@@ -47,7 +47,7 @@ class App extends Component {
       }
     });
   }
-  
+
 
   componentWillUnmount() {
     if (this.authListener) {
@@ -67,11 +67,15 @@ class App extends Component {
               <Homepage />
             </HomePageLayout>
           } />
-          <Route path="/registration" element={
-            <MainLayout currentUser={currentUser}>
-              <Registration />
-            </MainLayout>
-          } />
+          <Route
+            path="/registration"
+            element={currentUser ?
+              <Navigate to="/" /> :
+              <MainLayout currentUser={currentUser}>
+                <Registration />
+              </MainLayout>
+            }
+          />
           <Route path="/login"
             element={currentUser ? <Navigate to="/" replace /> :
               <MainLayout currentUser={currentUser}>
