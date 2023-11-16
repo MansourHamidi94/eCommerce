@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, getDocFromCache } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import { Firestore } from 'firebase/firestore';
 
 // Your Firebase configuration object
 import { firebaseConfig } from "./config";
@@ -29,13 +30,17 @@ export const handleUserProfile = async (userAuth, additionalData) => {
     if (!userAuth) return;
     const { uid } = userAuth;
 
+    // Create a reference to the user's document in Firestore
     const userRef = doc(firestore, `users/${uid}`);
+    // Attempt to retrieve the user's document
     const snapshot = await getDoc(userRef);
 
-    if (!snapshot.exists) {
-        const {displayName, email} = userAuth;
+    // if the snapshot doesnt exist, create a new user document
+    if (!snapshot.exists()) {
+        const { displayName, email } = userAuth;
         const timestamp = new Date();
         try {
+            // Set the user document with provided data
             await setDoc(userRef, {
                 displayName,
                 email,
@@ -43,8 +48,8 @@ export const handleUserProfile = async (userAuth, additionalData) => {
                 ...additionalData 
             });
         } catch (err) {
-            // console.log(err);
+            console.error("Error creating user document:", err);
         }
     }
     return userRef;
-}; 
+};
